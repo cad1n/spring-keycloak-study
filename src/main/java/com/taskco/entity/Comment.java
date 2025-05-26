@@ -1,6 +1,9 @@
 package com.taskco.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
@@ -15,23 +18,20 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Tasks {
+public class Comment {
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String description;
-    private String priority;
+    
+    private String text;
     private LocalDateTime createdAt;
-    private LocalDateTime deadline;
-    private String status;
 
     @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false)
-    private Integer categoryId;
-
-    @ManyToOne
-    @JoinColumn(name = "team_id", nullable = false)
-    private Integer teamId;
+    @JoinColumn(name = "task_id", nullable = false)
+    private Task task;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private Integer createdBy;
+    private User user;
 }

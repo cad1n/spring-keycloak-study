@@ -1,8 +1,9 @@
 package com.taskco.entity;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,16 +16,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Comments {
+public class Team {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String text;
+    
+    private String name;
     private LocalDateTime createdAt;
-
-    @ManyToOne
-    @JoinColumn(name = "task_id", nullable = false)
-    private Integer taskId;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private Integer userId;
 }

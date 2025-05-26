@@ -1,6 +1,6 @@
 package com.taskco.services;
 
-import com.taskco.entity.Teams;
+import com.taskco.entity.Team;
 import com.taskco.repositories.TeamRepository;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +14,11 @@ public class TeamService {
         this.repository = repository;
     }
 
-    public List<Teams> findAll() {
+    public List<Team> findAll() {
         return repository.findAll();
     }
 
-    public Teams findById(Integer id) {
+    public Team findById(Integer id) {
         return this.repository.findById(id).orElseThrow();
     }
 }
