@@ -26,11 +26,9 @@ public class CategoryController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Category> getCategoryById(@PathVariable Integer id) {
-        try {
-            return ResponseEntity.ok(categoryService.findById(id));
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
+        return categoryService.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
@@ -51,12 +49,10 @@ public class CategoryController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCategoryById(@PathVariable Integer id) {
-        try {
-            categoryService.findById(id);
+        if (categoryService.findById(id).isPresent()) {
             categoryService.deleteCategory(id);
             return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
         }
+        return ResponseEntity.notFound().build();
     }
 }

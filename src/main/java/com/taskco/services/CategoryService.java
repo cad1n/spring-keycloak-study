@@ -5,6 +5,7 @@ import com.taskco.repositories.CategoryRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryService {
@@ -19,8 +20,8 @@ public class CategoryService {
         return repository.findAll();
     }
 
-    public Category findById(Integer id) {
-        return this.repository.findById(id).orElseThrow();
+    public Optional<Category> findById(Integer id) {
+        return this.repository.findById(id);
     }
 
     public Category saveCategory(Category category) {
