@@ -30,7 +30,10 @@ public class CategoryController {
 
     @GetMapping
     public ResponseEntity<List<CategoryDTO>> getAllCategories() {
-        return ResponseEntity.ok(categoryService.findAll());
+        List<CategoryDTO> categories = categoryService.findAll();
+        return categories.isEmpty()
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.ok(categories);
     }
 
     @GetMapping("/{id}")
@@ -42,15 +45,16 @@ public class CategoryController {
 
     @PostMapping
     public ResponseEntity<CategoryDTO> createCategory(@RequestBody @Valid CategoryDTO categoryDTO) {
-        this.categoryService.saveCategory(categoryDTO);
-        return ResponseEntity.status(201).body(categoryDTO);
+        return categoryService.saveCategory(categoryDTO)
+                .map(savedCategory -> ResponseEntity.status(201).body(savedCategory))
+                .orElse(ResponseEntity.badRequest().build());
     }
 
     @PutMapping("/update")
     public ResponseEntity<CategoryDTO> updateCategory(@RequestBody CategoryDTO categoryDTO) {
         return categoryService.updateCategory(categoryDTO)
                 .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .orElse(ResponseEntity.badRequest().build());
     }
 
     @DeleteMapping("/{id}/delete")

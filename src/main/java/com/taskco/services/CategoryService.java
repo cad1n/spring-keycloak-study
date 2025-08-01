@@ -22,7 +22,8 @@ public class CategoryService {
     }
 
     public List<CategoryDTO> findAll() {
-        return repository.findAll().stream()
+        return repository.findAll()
+                .stream()
                 .map(mapper::toDTO)
                 .toList();
     }
@@ -40,9 +41,14 @@ public class CategoryService {
         });
     }
 
-    public void saveCategory(CategoryDTO categoryDTO) {
-        Category category = mapper.toEntity(categoryDTO);
-        repository.save(category);
+    public Optional<CategoryDTO> saveCategory(CategoryDTO categoryDTO) {
+        try {
+            Category category = mapper.toEntity(categoryDTO);
+            Category saved = repository.save(category);
+            return Optional.of(mapper.toDTO(saved));
+        } catch (Exception e) {
+            return Optional.empty();
+        }
     }
 
     public void deleteCategory(Integer id) {
