@@ -21,4 +21,12 @@ public class UserService {
     public User findById(Integer id) {
         return this.repository.findById(id).orElseThrow();
     }
+
+    public User save(User user) {
+        return repository.save(user);
+    }
+
+    public void delete(Integer id) {
+        repository.deleteById(id);
+    }
 }

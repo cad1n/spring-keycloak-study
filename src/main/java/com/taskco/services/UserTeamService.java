@@ -21,4 +21,12 @@ public class UserTeamService {
     public UserTeam findById(Integer id) {
         return this.repository.findById(id).orElseThrow();
     }
+
+    public UserTeam save(UserTeam userTeam) {
+        return repository.save(userTeam);
+    }
+
+    public void delete(Integer id) {
+        repository.deleteById(id);
+    }
 }

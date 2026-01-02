@@ -21,4 +21,12 @@ public class CommentService {
     public Comment findById(Integer id) {
         return this.repository.findById(id).orElseThrow();
     }
+
+    public Comment save(Comment comment) {
+        return repository.save(comment);
+    }
+
+    public void delete(Integer id) {
+        repository.deleteById(id);
+    }
 }

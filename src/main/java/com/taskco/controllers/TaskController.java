@@ -1,17 +1,12 @@
 package com.taskco.controllers;
 
+import com.taskco.dto.TaskDTO;
+import com.taskco.entity.Task;
+import com.taskco.mapper.TaskMapper;
 import com.taskco.services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import com.taskco.entity.Task;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,36 +15,41 @@ import java.util.List;
 public class TaskController {
 
     private final TaskService taskService;
+    private final TaskMapper mapper;
 
     @Autowired
-    public TaskController(TaskService taskService) {
+    public TaskController(TaskService taskService, TaskMapper mapper) {
         this.taskService = taskService;
+        this.mapper = mapper;
     }
 
     @GetMapping
-    public ResponseEntity<List<Task>> findAllTasks() {
-        return ResponseEntity.ok(taskService.findAll());
+    public ResponseEntity<List<TaskDTO>> findAllTasks() {
+        return ResponseEntity.ok(mapper.toDTOList(taskService.findAll()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Task> findTaskById(@PathVariable Integer id) {
+    public ResponseEntity<TaskDTO> findTaskById(@PathVariable Integer id) {
         return taskService.findById(id)
+            .map(mapper::toDTO)
             .map(ResponseEntity::ok)
             .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<Task> createTask(@RequestBody Task task) {
+    public ResponseEntity<TaskDTO> createTask(@RequestBody TaskDTO taskDTO) {
+        Task task = mapper.toEntity(taskDTO);
         Task savedTask = taskService.saveTask(task);
-        return ResponseEntity.ok(savedTask);
+        return ResponseEntity.ok(mapper.toDTO(savedTask));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Task> updateTask(@PathVariable Integer id, @RequestBody Task task) {
+    public ResponseEntity<TaskDTO> updateTask(@PathVariable Integer id, @RequestBody TaskDTO taskDTO) {
         return taskService.findById(id)
             .map(existingTask -> {
+                Task task = mapper.toEntity(taskDTO);
                 task.setId(id);
-                return ResponseEntity.ok(taskService.saveTask(task));
+                return ResponseEntity.ok(mapper.toDTO(taskService.saveTask(task)));
             })
             .orElse(ResponseEntity.notFound().build());
     }

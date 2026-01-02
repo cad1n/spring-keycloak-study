@@ -1,33 +1,33 @@
 package com.taskco.controllers;
 
-import com.taskco.dto.CommentDTO;
-import com.taskco.entity.Comment;
-import com.taskco.mapper.CommentMapper;
-import com.taskco.services.CommentService;
+import com.taskco.dto.UserTeamDTO;
+import com.taskco.entity.UserTeam;
+import com.taskco.mapper.UserTeamMapper;
+import com.taskco.services.UserTeamService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/comments")
-public class CommentController {
+@RequestMapping("/api/user-teams")
+public class UserTeamController {
 
-    private final CommentService service;
-    private final CommentMapper mapper;
+    private final UserTeamService service;
+    private final UserTeamMapper mapper;
 
-    public CommentController(CommentService service, CommentMapper mapper) {
+    public UserTeamController(UserTeamService service, UserTeamMapper mapper) {
         this.service = service;
         this.mapper = mapper;
     }
 
     @GetMapping
-    public ResponseEntity<List<CommentDTO>> findAll() {
+    public ResponseEntity<List<UserTeamDTO>> findAll() {
         return ResponseEntity.ok(mapper.toDTOList(service.findAll()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CommentDTO> findById(@PathVariable Integer id) {
+    public ResponseEntity<UserTeamDTO> findById(@PathVariable Integer id) {
         try {
             return ResponseEntity.ok(mapper.toDTO(service.findById(id)));
         } catch (Exception e) {
@@ -36,18 +36,18 @@ public class CommentController {
     }
 
     @PostMapping
-    public ResponseEntity<CommentDTO> create(@RequestBody CommentDTO commentDTO) {
-        Comment comment = mapper.toEntity(commentDTO);
-        return ResponseEntity.ok(mapper.toDTO(service.save(comment)));
+    public ResponseEntity<UserTeamDTO> create(@RequestBody UserTeamDTO userTeamDTO) {
+        UserTeam userTeam = mapper.toEntity(userTeamDTO);
+        return ResponseEntity.ok(mapper.toDTO(service.save(userTeam)));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CommentDTO> update(@PathVariable Integer id, @RequestBody CommentDTO commentDTO) {
+    public ResponseEntity<UserTeamDTO> update(@PathVariable Integer id, @RequestBody UserTeamDTO userTeamDTO) {
         try {
             service.findById(id);
-            Comment comment = mapper.toEntity(commentDTO);
-            comment.setId(id);
-            return ResponseEntity.ok(mapper.toDTO(service.save(comment)));
+            UserTeam userTeam = mapper.toEntity(userTeamDTO);
+            userTeam.setId(id);
+            return ResponseEntity.ok(mapper.toDTO(service.save(userTeam)));
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
