@@ -4,6 +4,7 @@ import com.taskco.dto.TeamDTO;
 import com.taskco.entity.Team;
 import com.taskco.mapper.TeamMapper;
 import com.taskco.services.TeamService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,13 +37,13 @@ public class TeamController {
     }
 
     @PostMapping
-    public ResponseEntity<TeamDTO> create(@RequestBody TeamDTO teamDTO) {
+    public ResponseEntity<TeamDTO> create(@RequestBody @Valid TeamDTO teamDTO) {
         Team team = mapper.toEntity(teamDTO);
         return ResponseEntity.ok(mapper.toDTO(service.save(team)));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TeamDTO> update(@PathVariable Integer id, @RequestBody TeamDTO teamDTO) {
+    public ResponseEntity<TeamDTO> update(@PathVariable Integer id, @RequestBody @Valid TeamDTO teamDTO) {
         try {
             service.findById(id);
             Team team = mapper.toEntity(teamDTO);

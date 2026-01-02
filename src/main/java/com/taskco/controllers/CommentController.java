@@ -4,6 +4,7 @@ import com.taskco.dto.CommentDTO;
 import com.taskco.entity.Comment;
 import com.taskco.mapper.CommentMapper;
 import com.taskco.services.CommentService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,13 +37,13 @@ public class CommentController {
     }
 
     @PostMapping
-    public ResponseEntity<CommentDTO> create(@RequestBody CommentDTO commentDTO) {
+    public ResponseEntity<CommentDTO> create(@RequestBody @Valid CommentDTO commentDTO) {
         Comment comment = mapper.toEntity(commentDTO);
         return ResponseEntity.ok(mapper.toDTO(service.save(comment)));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CommentDTO> update(@PathVariable Integer id, @RequestBody CommentDTO commentDTO) {
+    public ResponseEntity<CommentDTO> update(@PathVariable Integer id, @RequestBody @Valid CommentDTO commentDTO) {
         try {
             service.findById(id);
             Comment comment = mapper.toEntity(commentDTO);

@@ -51,7 +51,7 @@ public class CategoryController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<CategoryDTO> updateCategory(@RequestBody CategoryDTO categoryDTO) {
+    public ResponseEntity<CategoryDTO> updateCategory(@RequestBody @Valid CategoryDTO categoryDTO) {
         return categoryService.updateCategory(categoryDTO)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.badRequest().build());

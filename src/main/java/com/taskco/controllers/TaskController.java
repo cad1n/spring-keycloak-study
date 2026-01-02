@@ -4,6 +4,7 @@ import com.taskco.dto.TaskDTO;
 import com.taskco.entity.Task;
 import com.taskco.mapper.TaskMapper;
 import com.taskco.services.TaskService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,14 +38,14 @@ public class TaskController {
     }
 
     @PostMapping
-    public ResponseEntity<TaskDTO> createTask(@RequestBody TaskDTO taskDTO) {
+    public ResponseEntity<TaskDTO> createTask(@RequestBody @Valid TaskDTO taskDTO) {
         Task task = mapper.toEntity(taskDTO);
         Task savedTask = taskService.saveTask(task);
         return ResponseEntity.ok(mapper.toDTO(savedTask));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TaskDTO> updateTask(@PathVariable Integer id, @RequestBody TaskDTO taskDTO) {
+    public ResponseEntity<TaskDTO> updateTask(@PathVariable Integer id, @RequestBody @Valid TaskDTO taskDTO) {
         return taskService.findById(id)
             .map(existingTask -> {
                 Task task = mapper.toEntity(taskDTO);

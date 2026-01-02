@@ -4,6 +4,7 @@ import com.taskco.dto.UserDTO;
 import com.taskco.entity.User;
 import com.taskco.mapper.UserMapper;
 import com.taskco.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,13 +37,13 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserDTO> create(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<UserDTO> create(@RequestBody @Valid UserDTO userDTO) {
         User user = mapper.toEntity(userDTO);
         return ResponseEntity.ok(mapper.toDTO(service.save(user)));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> update(@PathVariable Integer id, @RequestBody UserDTO userDTO) {
+    public ResponseEntity<UserDTO> update(@PathVariable Integer id, @RequestBody @Valid UserDTO userDTO) {
         try {
             service.findById(id);
             User user = mapper.toEntity(userDTO);
