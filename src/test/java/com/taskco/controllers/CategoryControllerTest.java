@@ -1,7 +1,6 @@
 package com.taskco.controllers;
 
 import com.taskco.dto.CategoryDTO;
-import com.taskco.mapper.CategoryMapper;
 import com.taskco.services.CategoryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,12 +32,9 @@ class CategoryControllerTest {
     @Mock
     private CategoryService categoryService;
 
-    @Mock
-    private CategoryMapper categoryMapper;
-
     @BeforeEach
     void setup() {
-        CategoryController categoryController = new CategoryController(categoryService, categoryMapper);
+        CategoryController categoryController = new CategoryController(categoryService);
         mockMvc = MockMvcBuilders.standaloneSetup(categoryController).build();
     }
 
