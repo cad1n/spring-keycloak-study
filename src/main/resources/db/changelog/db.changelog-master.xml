@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="001" author="junie">
+        <createTable tableName="user_account">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="created_at" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="002" author="junie">
+        <createTable tableName="team">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="created_at" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="003" author="junie">
+        <createTable tableName="category">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="004" author="junie">
+        <createTable tableName="task">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="priority" type="VARCHAR(50)"/>
+            <column name="created_at" type="TIMESTAMP"/>
+            <column name="deadline" type="TIMESTAMP"/>
+            <column name="status" type="VARCHAR(50)"/>
+            <column name="category_id" type="INT">
+                <constraints foreignKeyName="fk_task_category" referencedTableName="category" referencedColumnNames="id"/>
+            </column>
+            <column name="team_id" type="INT">
+                <constraints foreignKeyName="fk_task_team" referencedTableName="team" referencedColumnNames="id"/>
+            </column>
+            <column name="created_by" type="INT">
+                <constraints foreignKeyName="fk_task_user" referencedTableName="user_account" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="005" author="junie">
+        <createTable tableName="comment">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="text" type="VARCHAR(1000)"/>
+            <column name="created_at" type="TIMESTAMP"/>
+            <column name="task_id" type="INT">
+                <constraints nullable="false" foreignKeyName="fk_comment_task" referencedTableName="task" referencedColumnNames="id"/>
+            </column>
+            <column name="user_id" type="INT">
+                <constraints nullable="false" foreignKeyName="fk_comment_user" referencedTableName="user_account" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="006" author="junie">
+        <createTable tableName="user_team">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="INT">
+                <constraints nullable="false" foreignKeyName="fk_userteam_user" referencedTableName="user_account" referencedColumnNames="id"/>
+            </column>
+            <column name="team_id" type="INT">
+                <constraints nullable="false" foreignKeyName="fk_userteam_team" referencedTableName="team" referencedColumnNames="id"/>
+            </column>
+            <column name="role" type="VARCHAR(50)"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
